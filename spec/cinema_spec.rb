@@ -1,10 +1,6 @@
-require_relative '../Cinema'
+require_relative '../cinema'
 
-describe Cinema do
-    it "should be true" do
-        expect(Cinema.new.test).to eq(true)
-    end
-    
+describe Cinema do       
     it "should shows movie" do
         expect(Cinema.new.show).to be_a(String)
     end

@@ -15,5 +15,7 @@ begin
   puts movies.all[25].has_genre?('Comedy')
   puts "_______________________"
   puts movies.all.last.has_genre?('Tragedy')
-
+rescue StandardError => error
+  puts "#{error.class}"
+  puts error.backtrace.inspect
 end
