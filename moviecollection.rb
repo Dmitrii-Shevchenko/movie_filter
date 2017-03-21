@@ -1,12 +1,13 @@
 require 'csv'
 require 'date'
+load 'movie.rb'
 class MovieCollection
   def initialize(file_name)
     if !File.file?(file_name)
       puts "File #{file_name} isn\'t exist"
       exit
     end
-    @arr_movs = CSV.read(file_name, col_sep: '|').map {|mov| Movie.new(mov)}
+    @arr_movs = CSV.read(file_name, {col_sep: '|'}).map {|mov| Movie.new(mov)}
     @uniq_genres
   end
 

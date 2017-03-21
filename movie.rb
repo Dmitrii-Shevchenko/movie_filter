@@ -1,5 +1,4 @@
-class Movie 
-  attr_reader :link, :title, :year, :country, :release, :genre, :time, :rate, :producer, :actors
+class Movie  attr_reader :link, :title, :year, :country, :release, :genre, :time, :rate, :producer, :actors
   def initialize(movie)
     @link = movie[0]
     @title = movie[1]
