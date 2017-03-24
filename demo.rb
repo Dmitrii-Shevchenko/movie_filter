@@ -1,7 +1,13 @@
 load 'cinema.rb'
+load 'netflix.rb'
 begin
-  #cin = Cinema.new
-  #puts cin.show
+  net = Netflix.new
+  puts net.show(genre: 'Comedy', period: :classic)
+  net.pay(25)
+  puts net.acct
+  net.pay(25)
+  puts net.acct
+  puts net.how_much?('Terminator')
 #  movies = MovieCollection.new(ARGV[0] || 'movies.txt')  
 #  puts movies.all.inspect	
 #  puts "_______________________"
