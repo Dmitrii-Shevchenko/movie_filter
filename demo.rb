@@ -1,13 +1,29 @@
-load 'cinema.rb'
 load 'netflix.rb'
+load 'theatre.rb'
 begin
-  net = Netflix.new
-  puts net.show(genre: 'Comedy', period: :classic)
+  net = Netflix.new('movies.txt' || ARGV[0])
+
   net.pay(25)
+  puts net.acct  
+  
+  puts net.show(genre: 'Comedy', period: :new).inspect
+    
   puts net.acct
-  net.pay(25)
-  puts net.acct
+  
   puts net.how_much?('Terminator')
+rescue Exception => err
+  puts "Caught exception: #{err.message}"
+  puts err.backtrace.inspect
+end
+  tht = Theatre.new('movies.txt' || ARGV[0])
+  puts tht.show("12:20").inspect
+  
+
+#  puts net.acct
+#  net.pay(25)
+#  puts net.acct
+#  puts net.how_much?('Terminator')
+  
 #  movies = MovieCollection.new(ARGV[0] || 'movies.txt')  
 #  puts movies.all.inspect	
 #  puts "_______________________"
@@ -25,4 +41,3 @@ begin
 #rescue StandardError => error
 #  puts "#{error.class}"
 #  puts error.backtrace.inspect
-end

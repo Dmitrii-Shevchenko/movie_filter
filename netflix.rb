@@ -1,22 +1,46 @@
-load 'cinema.rb'
-
-class Netflix < Cinema
+load 'moviecollection.rb'
+class Netflix < MovieCollection
   attr_reader :acct
   
   def show(req)
-    if req.value?(:ancent) 
-      @mov_clctn.filter(req.delete_if {|key| key == :period}.merge({year: 1900..1945})).inspect
+    sort_by(:rate)
+    if req.value?(:ancient)
+      calc(1)
+      check(filter(req.delete_if {|key| key == :period}.merge({year: 1900..1945})))
     elsif req.value?(:classic)
-      @mov_clctn.filter(req.delete_if {|key| key == :period}.merge({year: 1945..1968})).inspect
-    elsif req.value?(:modern)    
-      @mov_clctn.filter(req.delete_if {|key| key == :period}.merge({year: 1968..2000})).inspect     
-    elsif req.value?(:new)    
-      @mov_clctn.filter(req.delete_if {|key| key == :period}.merge({year: 2000..2017})).inspect 
+      calc(1.5)
+      check(filter(req.delete_if {|key| key == :period}.merge({year: 1945..1968})))
+    elsif req.value?(:modern)
+      calc(3)
+      check(filter(req.delete_if {|key| key == :period}.merge({year: 1968..2000})))  
+    elsif req.value?(:new)
+      calc(5)
+      check(filter(req.delete_if {|key| key == :period}.merge({year: 2000..2017})))
     else
-      @mov_clctn.filter(req).inspect
+      filter(req)
     end
   end
   
+  def  calc(price)
+    if price <= @acct
+      @acct = @acct-price
+    else
+      raise 'havnt money for showing movie'
+    end
+  end
+  
+  def check(mvs)  #возможео сравнить клас это или массив
+    if mvs.count >= 3
+      mvs.fetch(rand(0..2))
+    elsif mvs.count >= 2
+      mvs.fetch(rand(0..1))
+    elsif mvs.count >=1
+      mvs.fetch(0)
+    else
+      raise 'this movie doesnt exist'
+    end
+  end
+   
   def pay(mny)
     if !@acct.nil? and mny>0
       @acct = mny + @acct
@@ -26,6 +50,16 @@ class Netflix < Cinema
   end
   
   def how_much?(mov)
-    @mov_clctn.filter(title: /#{mov}/).inspect
+    if filter(title: /#{mov}/,year: 1900..1945).any?
+      1
+    elsif filter(title: /#{mov}/,year: 1945..1968).any?
+      1.5
+    elsif filter(title: /#{mov}/,year: 1968..2000).any?
+      3
+    elsif filter(title: /#{mov}/,year: 2000..2017).any?
+      5
+    end
   end
+  
+  private :check,:calc
 end
