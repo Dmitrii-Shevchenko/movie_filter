@@ -1,9 +1,12 @@
 load 'moviecollection.rb'
 class Netflix < MovieCollection
   attr_reader :acct
+  def initialize(file_name)
+    super(file_name)
+    sort_by(:rate)
+  end
   
   def show(req)
-    sort_by(:rate)
     if req.value?(:ancient)
       calc(1)
       check(filter(req.delete_if {|key| key == :period}.merge({year: 1900..1945})))
@@ -21,7 +24,7 @@ class Netflix < MovieCollection
     end
   end
   
-  def  calc(price)
+  private def  calc(price)
     if price <= @acct
       @acct = @acct-price
     else
@@ -29,7 +32,7 @@ class Netflix < MovieCollection
     end
   end
   
-  def check(mvs)  #возможео сравнить клас это или массив
+  private def check(mvs)
     if mvs.count >= 3
       mvs.fetch(rand(0..2))
     elsif mvs.count >= 2
@@ -60,6 +63,4 @@ class Netflix < MovieCollection
       5
     end
   end
-  
-  private :check,:calc
 end

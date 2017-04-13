@@ -22,7 +22,6 @@ class MovieCollection
   def filter(requests)
     requests.reduce(@arr_movs) {|movs,(filter, value)| movs.select{|mov| mov.matches?(filter, value)}}
   end
-  
 
   def stats(hsh)
     @arr_movs.group_by{|mov| mov.send(hsh)}.map{|k,v| [k, v.count] }.to_h
