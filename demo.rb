@@ -7,12 +7,12 @@ begin
   puts net.acct    
   puts net.show(genre: 'Comedy', period: :new).inspect  
   puts net.acct 
-  puts net.how_much?('Terminator')
+  puts net.how_much?('Elite Squad')
   
   #test thaetre
   tht = Theatre.new('movies.txt' || ARGV[0])
   puts tht.show("10:20").inspect
-  puts tht.when?('Psycho')  
+  puts tht.when?('Laura')  
   
 rescue Exception => err
   puts "Caught exception: #{err.message}"

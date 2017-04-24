@@ -1,40 +1,28 @@
 require 'time'
 load 'moviecollection.rb'
 class Theatre < MovieCollection
-  @@t_mor = Time.parse("06:00")...Time.parse("12:00")
-  @@t_aft = Time.parse("12:00")...Time.parse("18:00")
-  @@t_ev = Time.parse("18:00")...Time.parse("00:00")
-  @@t_night = Time.parse("00:00")...Time.parse("06:00")
+  DAY_TIME = [
+    Time.parse("06:00")...Time.parse("12:00"),
+    Time.parse("12:00")...Time.parse("18:00"),
+    Time.parse("18:00")...Time.parse("24:00")
+  ]
   
   def initialize(file_name)
     super(file_name)
-    @mor = filter(year: 1900..1945) 
-    @aft = filter(genre: 'Comedy') | filter(genre: 'Action')
-    @ev = filter(genre: 'Drama') | filter(genre: 'Horror')
+    @day_time = { 
+      DAY_TIME[0] => filter(year: 1900..1945),
+      DAY_TIME[1] => filter(genre: 'Comedy') | filter(genre: 'Action'),
+      DAY_TIME[2] => filter(genre: 'Horror') | filter(genre: 'Drama') 
+    }
   end
 
   def show(mov_time)
-    if @@t_mor.include?(Time.parse(mov_time))
-      @mor 
-    elsif @@t_aft.include?(Time.parse(mov_time))
-      @aft
-    elsif @@t_ev.include?(Time.parse(mov_time))
-      @ev
-    elsif @@t_night.include?(Time.parse(mov_time))
-      "the ether is closed"
-    else
-      "incorrect time"
-    end
+    @day_time.select {|time,movs| time.include?(Time.parse(mov_time)) }.values    
   end
   
   def when?(mov)
-    if @mor.include?(filter(title: /#{mov}/).first)
-      time_output(@@t_mor)
-    elsif @aft.include?(filter(title: /#{mov}/).first)
-      time_output(@@t_aft)
-    elsif @ev.include?(filter(title: /#{mov}/).first)
-      time_output(@@t_ev)
-    end
+    @day_time.select {|time,movs| (movs & filter(title: /#{mov}/)).empty? }
+      .keys.map {|time| time_output(time)}.join(" and ")
   end
   
   private def time_output(time_range)
