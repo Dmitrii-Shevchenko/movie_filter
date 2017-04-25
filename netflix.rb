@@ -11,6 +11,7 @@ class Netflix < MovieCollection
   def initialize(file_name)
     super(file_name)
     sort_by(:rate)
+    @acct = 0
   end
   
   def show(req)

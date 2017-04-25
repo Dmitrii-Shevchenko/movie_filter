@@ -4,7 +4,6 @@ require_relative '../netflix'
 describe Netflix do
   let(:netflix) {Netflix.new('movies.txt' || ARGV[0])}
   let(:paid){netflix.pay(25)}
-  let(:minus_pay){netflix.pay(-30)}
 
   it "should show movies when enough money" do
     paid
@@ -15,14 +14,14 @@ describe Netflix do
     expect {netflix.show(period: :new, genre: 'Comedy')}.to raise_error    
   end  
   
-  it "right preparing account " do 
-    paid
-    expect(netflix.acct).to eq(25)
-  end
-  
-  it "wrong preparing account " do 
-    minus_pay
-    expect(netflix.acct).to be nil
+  describe '#pay' do 
+    it 'changes account' do 
+      expect { netflix.pay(25) }.to change(netflix, :acct).by(25) 
+    end
+     
+    it 'fails when negative amount' do
+      expect {netflix.pay(-30)}.to change(netflix, :acct).by(0)
+    end 
   end
 
   it "should shows cost of the movie" do 
