@@ -30,6 +30,6 @@ class Movie  attr_reader :link, :title, :year, :country, :release, :genre, :time
   end
 
   def inspect
-    "#{@title} | #{@country} | #{@genre} | #{@year}\n"
+    "#{@title} | #{@country} | #{@genre} | #{@year} | #{@rate}\n"
   end
 end

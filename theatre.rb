@@ -17,9 +17,9 @@ class Theatre < MovieCollection
   end
 
   def show(mov_time)
-    @day_time.select {|time,movs| time.include?(Time.parse(mov_time)) }.values    
+    @day_time.select {|time,movs| time.include?(Time.parse(mov_time)) }.values.flatten
   end
-  
+
   def when?(mov)
     @day_time.select {|time,movs| (movs & filter(title: /#{mov}/)).empty? }
       .keys.map {|time| time_output(time)}.join(" and ")

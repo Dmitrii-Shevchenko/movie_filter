@@ -15,8 +15,9 @@ class Netflix < MovieCollection
   end
   
   def show(req)
-    TYPES.map {|type,range,price| if req.value?(type) then 
-      calc(price); filter(req.delete_if {|key| key == :period}.merge(year:range)) end }.compact     
+    TYPES.map {|type,range,price| if req.value?(type) then calc(price); 
+      filter(req.delete_if {|key| key == :period}.merge(year:range)) end }
+      .compact.flatten.map {|mov| Array.new((mov.rate.to_f*10),mov)}.flatten.sample
   end
   
   private def  calc(price)
@@ -25,10 +26,6 @@ class Netflix < MovieCollection
     else
       raise 'havnt money for showing movie'
     end
-  end
-  
-  private def check(mvs)
-    mvs.fetch(rand(0...mvs.count))
   end
    
   def pay(mny)
@@ -40,6 +37,6 @@ class Netflix < MovieCollection
   end
   
   def how_much?(mov)
-    TYPES.select {|type,range| filter(title: /#{mov}/,year:range).any?}.map(&:last).join.to_i
+    "Movie \"#{mov}\" costs: #{TYPES.select {|type,range| filter(title: /#{mov}/,year:range).any?}.map(&:last).join.to_i}"
   end
 end

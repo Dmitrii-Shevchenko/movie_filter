@@ -10,7 +10,7 @@ describe Netflix do
         netflix.pay(25)
       end 
       it 'should show movies' do
-        expect(netflix.show(genre: 'Comedy', period: :new).class).to eq(Array)   
+        expect(netflix.show(genre: 'Comedy', period: :new).class).to eq(Movie)   
       end
     end
 
