@@ -11,7 +11,7 @@ begin
   
   #test thaetre
   tht = Theatre.new('movies.txt' || ARGV[0])
-  puts tht.show("18:20").inspect
+ # puts tht.show("18:20").inspect
   puts tht.when?('Laura')  
   
 rescue Exception => err

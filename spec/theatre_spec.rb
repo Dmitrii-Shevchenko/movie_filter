@@ -5,18 +5,21 @@ describe Theatre do
   let(:theatre) {Theatre.new('movies.txt' || ARGV[0])}
   
   describe '#show' do
-    context 'if right time' do
-      it 'shoud show movies in morning time' do
-        expect(theatre.show("06:00").first.inspect.gsub("\n","")).to eq('Casablanca | USA | ["Drama", "Romance", "War"] | 1942 | 8.6')
-      end
+    subject { theatre.show(time).first.inspect.gsub("\n","") }
+    context 'morning' do
+      let(:time) { '06:00' }
+      it { is_expected.to eq('Casablanca | USA | ["Drama", "Romance", "War"] | 1942 | 8.6') }
+    end
+    
+    context 'day' do
+      let(:time) { '12:00' }
+      it { is_expected.to eq('Life Is Beautiful | Italy | ["Comedy", "Drama", "Romance"] | 1997 | 8.6')}
+    end
+     
       
-      it 'shoud show movies in afternoon time' do
-        expect(theatre.show("12:00").first.inspect.gsub("\n","")).to eq('Life Is Beautiful | Italy | ["Comedy", "Drama", "Romance"] | 1997 | 8.6')
-      end
-      
-      it 'shoud show movies on evening time' do
-        expect(theatre.show("18:00").first.inspect.gsub("\n","")).to eq('Psycho | USA | ["Horror", "Mystery", "Thriller"] | 1960 | 8.6')
-      end            
+    context 'day' do
+      let(:time) { '18:00' }
+      it { is_expected.to eq('Psycho | USA | ["Horror", "Mystery", "Thriller"] | 1960 | 8.6')}            
     end
     
     context 'if night time' do
@@ -24,7 +27,7 @@ describe Theatre do
         expect(theatre.show("04:20").empty?).to eq(true)
       end
     end   
-  end
+end
     
   describe '#when' do
     it 'should show time' do
