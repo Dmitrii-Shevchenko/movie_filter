@@ -17,12 +17,24 @@ class Theatre < MovieCollection
   end
 
   def show(mov_time)
-    @day_time.select {|time,movs| time.include?(Time.parse(mov_time)) }.values.flatten
+    check(@day_time.select {|time,movs| time.include?(Time.parse(mov_time)) }.values.flatten)
   end
 
+  private def check(mov_list)
+    if mov_list.empty?
+      raise 'have not this movie or incorrect time'
+    else
+      mov_list
+    end
+  end
+  
   def when?(mov)
-    @day_time.select {|time,movs| (movs & filter(title: /#{mov}/)).empty? }
-      .keys.map {|time| time_output(time)}.join(" and ")
+    if @day_time.values.inject( all() ) {|sum,filter| sum-filter}.include?(filter(title: /#{mov}/).first)
+      raise 'have not time for this movie'
+    else
+    check(@day_time.select {|time,movs| !(movs & filter(title: /#{mov}/)).empty? }
+      .keys.map {|time| time_output(time)})
+    end   
   end
   
   private def time_output(time_range)

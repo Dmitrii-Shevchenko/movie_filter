@@ -23,15 +23,29 @@ describe Theatre do
     end
     
     context 'if night time' do
-      it 'shoud show movies on time' do
-        expect(theatre.show("04:20").empty?).to eq(true)
+      it 'should drop error' do
+        expect {theatre.show("04:20")}.to raise_error 
       end
     end   
-end
+  end
     
   describe '#when' do
-    it 'should show time' do
-      expect(theatre.when?('Psycho')).to eq("since 06:00 before 12:00 and since 12:00 before 18:00")
+    context 'if movie exists and included in ranges' do
+      it 'should show movies time' do
+        expect(theatre.when?('Terminator').first).to eq("since 12:00 before 18:00")
+      end
+    end
+    
+    context 'if movie doesnt exist' do
+      it 'should drop error' do
+        expect {theatre.when?('`')}.to raise_error
+      end
+    end
+
+    context 'if movie exists but unincluded in ranges' do 
+      it 'should drop error' do
+        expect {theatre.when?('The Killing')}.to raise_error
+      end
     end
   end
 end
