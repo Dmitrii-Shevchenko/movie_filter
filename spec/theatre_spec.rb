@@ -24,7 +24,7 @@ describe Theatre do
     
     context 'if night time' do
       it 'should drop error' do
-        expect {theatre.show("04:20")}.to raise_error 
+        expect {theatre.show("04:20")}.to raise_error('have not this movie or incorrect time')
       end
     end   
   end
@@ -38,13 +38,13 @@ describe Theatre do
     
     context 'if movie doesnt exist' do
       it 'should drop error' do
-        expect {theatre.when?('`')}.to raise_error
+        expect {theatre.when?('`')}.to raise_error('have not this movie or incorrect time')
       end
     end
 
     context 'if movie exists but unincluded in ranges' do 
       it 'should drop error' do
-        expect {theatre.when?('The Killing')}.to raise_error
+        expect {theatre.when?('The Killing')}.to raise_error('have not time for this movie')
       end
     end
   end
