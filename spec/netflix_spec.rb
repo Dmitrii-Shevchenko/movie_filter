@@ -11,26 +11,24 @@ describe Netflix do
         netflix.pay(25)
       end 
       it 'should show movies' do
-        expect(netflix.show(genre: 'Comedy', period: :new).class).to eq(Movie)   
+        expect(netflix.show(genre: 'Comedy', period: :new).class).to eq(String)   
       end
       
-      context 'test all periods' do
-        subject { netflix.show(period: per).class }
-        context 'ancient' do
-          let(:per) { :ancient }
-          it { is_expected.to eq(Movie) }
-        end    
-        context 'classic' do
-          let(:per) { :classic }
-          it { is_expected.to eq(Movie) }
-        end 
-        context 'modern' do
-          let(:per) { :modern }
-          it { is_expected.to eq(Movie) }
-        end 
-        context 'new' do
-          let(:per) { :new }
-          it { is_expected.to eq(Movie) }
+      context 'test all periods' do        
+        describe 1900..1945 do
+          it { is_expected.to include(netflix.get_mov(period: :ancient).year) }
+        end
+        
+        describe 1945..1968 do
+          it { is_expected.to include(netflix.get_mov(period: :classic).year) }
+        end
+        
+        describe 1968..2000 do
+          it { is_expected.to include(netflix.get_mov(period: :modern).year) }
+        end
+        
+        describe 2000..2017 do
+          it { is_expected.to include(netflix.get_mov(period: :new).year) }
         end                 
       end
     end
