@@ -7,7 +7,7 @@ class MovieCollection
       puts "File #{file_name} isn\'t exist"
       exit
     end
-    @arr_movs = CSV.read(file_name, {col_sep: '|'}).map {|mov| Movie.create(mov)} #Movie.new(mov).create
+    @arr_movs = CSV.read(file_name, {col_sep: '|'}).map {|mov| Movie.create(mov,self)}
     @uniq_genres
   end
 

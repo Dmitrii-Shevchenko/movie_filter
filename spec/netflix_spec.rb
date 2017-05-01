@@ -16,19 +16,19 @@ describe Netflix do
       
       context 'test all periods' do        
         describe 1900..1945 do
-          it { is_expected.to include(netflix.get_mov(period: :ancient).year) }
+          it { is_expected.to include(netflix.show(period: :ancient).year) }
         end
         
         describe 1945..1968 do
-          it { is_expected.to include(netflix.get_mov(period: :classic).year) }
+          it { is_expected.to include(netflix.show(period: :classic).year) }
         end
         
         describe 1968..2000 do
-          it { is_expected.to include(netflix.get_mov(period: :modern).year) }
+          it { is_expected.to include(netflix.show(period: :modern).year) }
         end
         
         describe 2000..2017 do
-          it { is_expected.to include(netflix.get_mov(period: :new).year) }
+          it { is_expected.to include(netflix.show(period: :new).year) }
         end                 
       end
     end

@@ -26,24 +26,25 @@ class Movie  attr_reader :link, :title, :year, :country, :release, :genre, :time
   end
 
   def has_genre?(param)
-    if !(MovieCollection.new(ARGV[0] || 'movies.txt')).get_genres.include? (param)
+    if !(@@mov_col).get_genres.include? (param)
       raise
     else 
       @genre.include?(param)
     end
   end
   
-  def self.create(mov)
-    if (1900..1945).include?(mov[2].to_i)
-      Ancient.new(mov)
-    elsif (1945..1968).include?(mov[2].to_i)
-      Classic.new(mov)
-    elsif (1968..2000).include?(mov[2].to_i)
-      Modern.new(mov)
-    elsif (2000..Date.today.year).include?(mov[2].to_i)
-      New.new(mov)
-    else
-      Movie.new(mov)
+  def self.create(mov,col)
+    case mov[2].to_i
+      when (1900..1945)
+          Ancient.new(mov)
+      when (1945..1968)
+          Classic.new(mov,col)
+      when (1968..2000)
+          Modern.new(mov)
+      when (2000..Date.today.year)
+          New.new(mov)
+      else
+          Movie.new(mov)
     end
   end
 
