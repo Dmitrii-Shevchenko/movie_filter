@@ -28,8 +28,8 @@ attr_reader :link, :title, :year, :country, :release, :genre, :time, :rate, :pro
   end
 
   def has_genre?(param)
-    if !(@mov_col).get_genres.include? (param)
-      raise "Такого жанра не существует"
+    unless (@mov_col).get_genres.include? (param)
+      raise "#{param} жанра не существует"
     end
     @genre.include?(param)
   end
