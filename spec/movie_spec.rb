@@ -5,7 +5,6 @@ require_relative '../ancient'
 describe Movie do
   let(:mov_col){MovieCollection.new('movies.txt')}
   describe '#Movie.create' do
-    #let(:mov_col){MovieCollection.new('movies.txt')}
     let(:content){["http://imdb.com/title/tt0073195/?ref_=chttp_tt_209","Jaws",year,"USA","1975-06-20","Adventure,Drama,Thriller","124 min","8.1","Steven Spielberg","Roy Scheider,Robert Shaw,Richard Dreyfuss"]}
     subject{Movie.create(content,mov_col).inspect }
 
@@ -31,7 +30,6 @@ describe Movie do
   end
   
   describe '#has_genre' do
-    #let(:mov_col){MovieCollection.new('movies.txt')}
     let(:content){["http://imdb.com/title/tt0073195/?ref_=chttp_tt_209","Jaws","1930","USA","1975-06-20","Adventure,Drama,Thriller","124 min","8.1","Steven Spielberg","Roy Scheider,Robert Shaw,Richard Dreyfuss"]}
     subject{Movie.create(content,mov_col).has_genre?(genre) }
     
@@ -47,7 +45,7 @@ describe Movie do
     
     context 'not exist condition' do
       let(:genre) { 'www' }
-      it { expect{subject}.to raise_error('www жанра не существует') }
+      it { expect{subject}.to raise_error('жанра www не существует') }
     end
   end
 end
