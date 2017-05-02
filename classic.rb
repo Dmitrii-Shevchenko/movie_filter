@@ -7,6 +7,6 @@ class Classic < Movie
   end
   
   def inspect
-    "#{@title} - классический фильм, режиссёр #{@producer} (#{@@mov_col.filter(producer: (@producer)).map{|mov| mov.title}.last(10).join(',')})"
+    "#{@title} - классический фильм, #{@producer} это известный режиссёр, ещё (#{@@mov_col.filter(producer: (@producer)).map{|mov| mov.title}.count}) его фильмов попал(и) в топ-250"
   end
 end

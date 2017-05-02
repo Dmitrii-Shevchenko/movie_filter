@@ -35,7 +35,7 @@ describe Netflix do
 
     context 'when not enough money' do
      it 'should raise error' do 
-        expect {netflix.show(period: :new, genre: 'Comedy')}.to raise_error('havnt money for showing movie')    
+        expect {netflix.show(period: :new, genre: 'Comedy')}.to raise_error('havnt money for showing movie')
       end  
     end
   end
