@@ -20,8 +20,8 @@ begin
   tht = Theatre.new('movies.txt' || ARGV[0])
   puts tht.show("10:20").inspect
   puts tht.when?('Terminator') 
-  
-  
+#  puts MovieCollection.new('movies.txt').all.first.has_genre?('Horror')
+
 rescue Exception => err
   puts "Caught exception: #{err.message}"
   puts err.backtrace.inspect

@@ -2,8 +2,7 @@ require_relative 'ancient'
 require_relative 'classic'
 require_relative 'modern'
 require_relative 'new'
-class Movie  
-@mov_col 
+class Movie   
 attr_reader :link, :title, :year, :country, :release, :genre, :time, :rate, :producer, :actors
   def initialize(movie,col)
     @link = movie[0]
@@ -29,11 +28,10 @@ attr_reader :link, :title, :year, :country, :release, :genre, :time, :rate, :pro
   end
 
   def has_genre?(param)
-    if !(@@mov_col).get_genres.include? (param)
-      raise
-    else 
-      @genre.include?(param)
+    if !(@mov_col).get_genres.include? (param)
+      raise "Такого жанра не существует"
     end
+    @genre.include?(param)
   end
   
   def self.create(mov,col)
