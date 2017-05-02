@@ -46,9 +46,8 @@ describe Movie do
     end
     
     context 'not exist condition' do
-      it 'should raise error' do 
-        expect { let(:genre) { 'www' } }.to raise_error
-      end 
+      let(:genre) { 'www' }
+      it { expect{subject}.to raise_error('www жанра не существует') }
     end
   end
 end
