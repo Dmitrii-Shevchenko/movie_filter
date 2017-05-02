@@ -2,8 +2,10 @@ require_relative 'ancient'
 require_relative 'classic'
 require_relative 'modern'
 require_relative 'new'
-class Movie  attr_reader :link, :title, :year, :country, :release, :genre, :time, :rate, :producer, :actors
-  def initialize(movie)
+class Movie  
+@mov_col 
+attr_reader :link, :title, :year, :country, :release, :genre, :time, :rate, :producer, :actors
+  def initialize(movie,col)
     @link = movie[0]
     @title = movie[1]
     @year = movie[2].to_i
@@ -14,6 +16,7 @@ class Movie  attr_reader :link, :title, :year, :country, :release, :genre, :time
     @rate = movie[7]
     @producer = movie[8]
     @actors = movie[9].split(",")
+    @mov_col = col
   end
 
   def matches?(key, value)
@@ -36,15 +39,15 @@ class Movie  attr_reader :link, :title, :year, :country, :release, :genre, :time
   def self.create(mov,col)
     case mov[2].to_i
       when (1900..1945)
-          Ancient.new(mov)
+          Ancient.new(mov,col)
       when (1945..1968)
           Classic.new(mov,col)
       when (1968..2000)
-          Modern.new(mov)
+          Modern.new(mov,col)
       when (2000..Date.today.year)
-          New.new(mov)
+          New.new(mov,col)
       else
-          Movie.new(mov)
+          Movie.new(mov,col)
     end
   end
 

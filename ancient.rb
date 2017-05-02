@@ -1,7 +1,9 @@
 load 'movie.rb'
 class Ancient < Movie
-  def initialize(movie)
-    super(movie)
+@mov_col
+  def initialize(movie,col)
+    super(movie,col)
+    @mov_col = col
   end
   
   def inspect
