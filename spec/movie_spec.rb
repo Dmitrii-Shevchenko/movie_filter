@@ -15,7 +15,7 @@ describe Movie do
     
     context 'Classic' do
       let(:year) { '1960' }
-      it { is_expected.to eq("Jaws - классический фильм, режиссёр Steven Spielberg (Schindler's List,Saving Private Ryan,Raiders of the Lost Ark,Indiana Jones and the Last Crusade,Jurassic Park,Jaws)") }
+      it { is_expected.to eq("Jaws - классический фильм, Steven Spielberg это известный режиссёр, ещё (6) его фильмов попал(и) в топ-250") }
     end
     
     context 'Modern' do
