@@ -19,7 +19,7 @@ describe Theatre do
       
     context 'day' do
       let(:time) { '18:00' }
-      it { is_expected.to eq('Psycho - классический фильм, Alfred Hitchcock это известный режиссёр, ещё (8) его фильмов попал(и) в топ-250')}            
+      it { is_expected.to eq('Psycho - классический фильм, Alfred Hitchcock это известный режиссёр, ещё (7) его фильм(ов) попал(и) в топ-250')}            
     end
     
     context 'if night time' do

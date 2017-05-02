@@ -15,7 +15,7 @@ describe Movie do
     
     context 'Classic' do
       let(:year) { '1960' }
-      it { is_expected.to eq("Jaws - классический фильм, Steven Spielberg это известный режиссёр, ещё (6) его фильмов попал(и) в топ-250") }
+      it { is_expected.to eq("Jaws - классический фильм, Steven Spielberg это известный режиссёр, ещё (5) его фильм(ов) попал(и) в топ-250") }
     end
     
     context 'Modern' do
