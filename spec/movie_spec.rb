@@ -48,4 +48,19 @@ describe Movie do
       it { expect{subject}.to raise_error('жанра www не существует') }
     end
   end
+  
+  describe '#mathches' do 
+    let(:content){["http://imdb.com/title/tt0073195/?ref_=chttp_tt_209","Jaws","1930","USA","1975-06-20","Adventure,Drama,Thriller","124 min","8.1","Steven Spielberg","Roy Scheider,Robert Shaw,Richard Dreyfuss"]}
+    subject{Movie.create(content,mov_col).matches?(:title,req) }
+    
+    context 'right matches' do
+      let(:req) { "Jaws" }
+      it { is_expected.to be true }
+    end
+    
+    context 'wrong matches' do
+      let(:req) { "jjaws" }
+      it { is_expected.to be false }
+    end    
+  end
 end
