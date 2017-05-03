@@ -20,7 +20,7 @@ attr_reader :link, :title, :year, :country, :release, :genre, :time, :rate, :pro
 
   def matches?(key, value)
     self_key = self.send(key)
-    if !self_key.is_a?(Array)
+    unless self_key.is_a?(Array)
       value===self_key
     else
       self_key.include?(value)
