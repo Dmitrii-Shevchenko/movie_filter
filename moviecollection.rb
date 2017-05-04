@@ -2,6 +2,7 @@ require 'csv'
 require 'date'
 load 'movie.rb'
 class MovieCollection
+  include Enumerable
   def initialize(file_name)
     if !File.file?(file_name)
       puts "File #{file_name} isn\'t exist"

@@ -1,6 +1,8 @@
 require 'time'
 load 'moviecollection.rb'
 class Theatre < MovieCollection
+  include Enumerable
+  include Cashbox
   DAY_TIME = [
     Time.parse("06:00")...Time.parse("12:00"),
     Time.parse("12:00")...Time.parse("18:00"),
@@ -39,5 +41,9 @@ class Theatre < MovieCollection
   
   private def time_output(time_range)
     "since #{time_range.first.strftime('%H:%M')} before #{time_range.end.strftime('%H:%M')}"
+  end
+  
+  def buy_ticket
+    "вы купили билет на #{self.all.first.title} фильма"
   end
 end

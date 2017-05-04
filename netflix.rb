@@ -1,5 +1,8 @@
 load 'moviecollection.rb'
+require_relative 'cashbox'
 class Netflix < MovieCollection
+  include Enumerable
+  include Cashbox
   attr_reader :acct
   TYPES = [
     [:ancient, 1900..1945, 1],
@@ -29,10 +32,17 @@ class Netflix < MovieCollection
   end
    
   def pay(mny)
-    if !@acct.nil? and mny>0
+#    if !@acct.nil? and mny>0
+#      @acct = mny + @acct
+#      Cashbox.pay(@acct)
+#    elsif mny>0
+#      @acct = mny
+#      Cashbox.pay(@acct)
+#    end
+    
+    if mny>0
       @acct = mny + @acct
-    elsif mny>0
-      @acct = mny
+      Cashbox.pay(mny)
     end
   end
   
