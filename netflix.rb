@@ -1,7 +1,6 @@
 load 'moviecollection.rb'
 require_relative 'cashbox'
 class Netflix < MovieCollection
-  include Enumerable
   extend Cashbox
   attr_reader :acct
   TYPES = [
@@ -34,7 +33,6 @@ class Netflix < MovieCollection
   def pay(mny)
     if mny>0
       @acct = mny + @acct
-      Netflix.pay(mny)
     end
   end
   

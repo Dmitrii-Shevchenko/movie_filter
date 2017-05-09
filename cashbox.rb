@@ -1,26 +1,29 @@
-#require_relative 'theatre'
 module Cashbox
-  @@acct = 0
+  @@net_acct = []
   
   def cash
-    theatre? ? get_theatre : @@acct
+    theatre? ? cash_from(tht_acct) : cash_from(@@net_acct)
   end
   
-  def pay(price)
-    theatre? ? pay_theatre(price) : @@acct += price
+  def pay(price,cup='USD')
+    theatre? ? tht_acct.push(Money.new(price,cup)) : @@net_acct.push(Money.new(price,cup))
   end
-#-------------------------------------------
-  
+       
   def buy_ticket
-    if(Theatre::DAY_TIME[0].include?(Time.parse(time_now)))
-      pay_theatre(3)
-      "вы купили билет на #{self.show(time_now).sample.title}"
-    elsif(Theatre::DAY_TIME[1].include?(Time.parse(time_now)))
-      pay_theatre(5)    
-      "вы купили билет на #{self.show(time_now).sample.title}"
-    elsif(Theatre::DAY_TIME[2].include?(Time.parse(time_now)))
-      pay_theatre(10)        
-      "вы купили билет на #{self.show(time_now).sample.title}"
+    if theatre?
+      case Time.parse(time_now)
+        when (Theatre::DAY_TIME[0])
+            pay(3)
+            "(#{time_now}) вы купили билет на #{self.show(time_now).sample.title}"
+        when (Theatre::DAY_TIME[1])
+            pay(5)    
+            "(#{time_now}) вы купили билет на #{self.show(time_now).sample.title}"
+        when (Theatre::DAY_TIME[2])
+            pay(10)        
+            "(#{time_now}) вы купили билет на #{self.show(time_now).sample.title}"
+        else
+            '(#{Time.parse(time_now)}) Кинотеатр не работает'
+      end      
     end
   end
   
@@ -29,7 +32,7 @@ module Cashbox
       @tht_acct.clear
       'Проведена инкассация'
     elsif who.eql?'bank'
-      @@acct = 0
+      @@net_acct.clear
       'Проведена инкассация'
     else
       raise 'Вызов полиции'
@@ -47,15 +50,15 @@ module Cashbox
     @tht_acct ||= []
   end
 
-  def pay_theatre(obj)
-    tht_acct.push(obj)
-  end
-
-  def get_theatre
-    tht_acct.reduce(0) { |n, value| n + value }
-  end
-  
   def theatre?
     self.class.eql?(Theatre)
   end
+  
+  def cash_from(acct)
+    unless acct.empty?
+      return acct.group_by{|x| x.currency}.map{|key,value| "#{key.id} #{value.reduce(0) {|sum,n| sum+n.cents} }" }
+    end
+    return 0
+  end
+  
 end

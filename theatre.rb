@@ -1,7 +1,6 @@
 require 'time'
 load 'moviecollection.rb'
 class Theatre < MovieCollection
-  include Enumerable
   include Cashbox
   DAY_TIME = [
     Time.parse("06:00")...Time.parse("12:00"),
