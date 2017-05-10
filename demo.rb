@@ -52,6 +52,7 @@ begin
   puts tht.cash
   puts tht2.cash
   puts tht2.buy_ticket
+  puts tht2.buy_ticket("10:20")  
   puts tht2.cash
 rescue Exception => err
   puts "Caught exception: #{err.message}"

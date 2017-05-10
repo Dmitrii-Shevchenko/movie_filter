@@ -9,20 +9,20 @@ module Cashbox
     theatre? ? tht_acct.push(Money.new(price,cup)) : @@net_acct.push(Money.new(price,cup))
   end
        
-  def buy_ticket
+  def buy_ticket(time=time_now)
     if theatre?
-      case Time.parse(time_now)
+      case Time.parse(time)
         when (Theatre::DAY_TIME[0])
             pay(3)
-            "(#{time_now}) вы купили билет на #{self.show(time_now).sample.title}"
+            "(#{time}) вы купили билет на #{self.show(time_now).sample.title}"
         when (Theatre::DAY_TIME[1])
             pay(5)    
-            "(#{time_now}) вы купили билет на #{self.show(time_now).sample.title}"
+            "(#{time}) вы купили билет на #{self.show(time_now).sample.title}"
         when (Theatre::DAY_TIME[2])
             pay(10)        
-            "(#{time_now}) вы купили билет на #{self.show(time_now).sample.title}"
+            "(#{time}) вы купили билет на #{self.show(time_now).sample.title}"
         else
-            '(#{Time.parse(time_now)}) Кинотеатр не работает'
+            '(#{Time.parse(time)}) Кинотеатр не работает'
       end      
     end
   end
