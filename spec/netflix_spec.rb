@@ -1,9 +1,7 @@
-module MovieModule   
-  require 'spec_helper'
-  require_relative '../netflix'
-
+require_relative 'spec_helper'
+require_relative '../lib/movie_module'
   describe Netflix do
-    let(:netflix) {Netflix.new('movies.txt')}
+    let(:netflix) {Netflix.new('./example/movies.txt')}
     
     describe '#show' do
     
@@ -55,4 +53,3 @@ module MovieModule
       expect(netflix.how_much?('Terminator')).to eq('Movie "Terminator" costs: 3')
     end
   end
-end

@@ -1,7 +1,6 @@
 module MovieModule  
   require 'csv'
   require 'date'
-  load 'movie.rb'
   class MovieCollection
     include Enumerable
     def initialize(file_name)

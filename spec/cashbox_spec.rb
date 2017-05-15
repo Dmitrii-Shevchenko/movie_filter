@@ -1,13 +1,8 @@
-module MovieModule 
-  require 'spec_helper'
-  require 'money'
-  require_relative '../cashbox'
-  require_relative '../netflix'
-  require_relative '../theatre'
-
+require_relative 'spec_helper'
+require_relative '../lib/movie_module'
   describe Cashbox do
-    let(:first_tht){Theatre.new('movies.txt')}
-    let(:second_tht){Theatre.new('movies.txt')}
+    let(:first_tht){Theatre.new('./example/movies.txt')}
+    let(:second_tht){Theatre.new('./example/movies.txt')}
     
     describe '#cash' do
       describe 'for first theatre' do
@@ -123,4 +118,4 @@ module MovieModule
       end
     end
   end
-end
+

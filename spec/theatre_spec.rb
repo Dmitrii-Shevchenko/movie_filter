@@ -1,9 +1,7 @@
-module MovieModule   
-  require 'spec_helper'
-  require_relative '../theatre'
-
+require_relative 'spec_helper'
+require_relative '../lib/movie_module'
   describe Theatre do
-    let(:theatre) {Theatre.new('movies.txt')}
+    let(:theatre) {Theatre.new('./example/movies.txt')}
     
     describe '#show' do
       subject { theatre.show(time).first.inspect.gsub("\n","") }
@@ -50,4 +48,4 @@ module MovieModule
       end
     end
   end
-end
+

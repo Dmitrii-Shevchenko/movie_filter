@@ -1,5 +1,5 @@
 module MovieModule  
-  load 'movie.rb'
+  #require_relative 'movie'
   class Modern < Movie  
     def inspect
       "#{@title} - cовременное кино: играют #{@actors.join(',')}"
