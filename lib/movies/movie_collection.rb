@@ -1,4 +1,4 @@
-module MovieModule  
+module Movies 
   require 'csv'
   require 'date'
   class MovieCollection

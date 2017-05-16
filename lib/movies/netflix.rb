@@ -1,5 +1,5 @@
 require_relative 'cashbox'
-module MovieModule  
+module Movies 
   class Netflix < MovieCollection
     extend Cashbox
     attr_reader :person_acct

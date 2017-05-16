@@ -1,8 +1,4 @@
-module MovieModule
-#  require_relative 'ancient'
-#  require_relative 'classic'
-#  require_relative 'modern'
-#  require_relative 'new'
+module Movies
   class Movie   
   attr_reader :link, :title, :year, :country, :release, :genre, :time, :rate, :producer, :actors
     def initialize(movie,col)

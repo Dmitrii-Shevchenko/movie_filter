@@ -1,5 +1,4 @@
-module MovieModule
-  #load 'movie.rb'
+module Movies
   class New < Movie 
     def inspect
       "#{@title} - новинка, вышло #{Date.today.year-@year} лет назад!"

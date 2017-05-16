@@ -1,6 +1,6 @@
 require_relative 'cashbox'
 require 'time'
-module MovieModule 
+module Movies
   class Theatre < MovieCollection
     include Cashbox
     attr_accessor :cash_sum

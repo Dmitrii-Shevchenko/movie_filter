@@ -1,5 +1,4 @@
-module MovieModule
-  #require_relative 'movie'
+module Movies
   class Ancient < Movie
     def inspect
       "#{@title} - старый фильм(#{@year} год)"
