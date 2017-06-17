@@ -3,7 +3,7 @@ include  Movies
 begin
   #test netflix
   net = Netflix.new('./example/movies.txt' || ARGV[0])
-  net.pay(12)
+  net.pay(300)
   puts net.person_acct    
   puts net.show(genre: 'Comedy', period: :ancient).inspect 
   
@@ -34,25 +34,41 @@ begin
   
   puts Netflix.cash
   puts "-----------------------------------"
-  #puts Netflix.cash
   tht.pay(1000,'USD')
-  #money = Money.new(1000, "USD")
-  #puts money.cents     #=> 1000
-  #puts money.currency  #=> Currency.new("USD")
-  
-  
-#    puts tht2.cash
+
   tht2.pay(25)
-#    puts tht2.cash
-#    
+
   tht.pay(30,"EUR")
   puts tht.cash
   puts tht.take('bank')
   puts tht.cash
-#    puts tht2.cash
-  puts tht2.buy_ticket
+
+  puts tht2.buy_ticket('11:30')
   puts tht2.buy_ticket("10:20")  
   puts tht2.cash
+  
+  puts "-----------------------------------------"
+  puts "FILTER: define_filter(:new_sci_fi) { |movie| movie.year > 2014 }"
+  net.define_filter(:new_sci_fi) { |movie| movie.year > 2014 }
+  puts net.show(new_sci_fi: true)
+  
+  puts "-----------------------------------------"
+  puts "FILTER: define_filter(:newq) { |movie| movie.year < 1950}"
+  net.define_filter(:newq) { |movie| movie.year < 1950}
+  puts net.show(newq: true)
+  
+  puts "-----------------------------------------"
+  puts "FILTER: certain"
+  puts net.show { 
+    |movie| !movie.title.include?('Terminator') && 
+    movie.genre.include?('Action') && 
+    movie.year > 2008 
+  }
+  
+  puts "-----------------------------------------"
+  puts net.show(period: :ancient)
+  puts "-----------------------------------------"
+  puts net.show
 rescue Exception => err
   puts "Caught exception: #{err.message}"
   puts err.backtrace.inspect

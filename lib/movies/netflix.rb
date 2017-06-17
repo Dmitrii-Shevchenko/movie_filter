@@ -1,8 +1,9 @@
 require_relative 'cashbox'
 module Movies 
+  # class Netflix for online theatre
   class Netflix < MovieCollection
     extend Cashbox
-    attr_reader :person_acct
+    attr_reader :person_acct, :mov_filter, :blocks
     TYPES = [
       [:ancient, 1900..1945, 1],
       [:classic, 1945..1968, 1.5],
@@ -13,13 +14,9 @@ module Movies
     def initialize(file_name)
       super(file_name)
       sort_by(:rate)
-      @person_acct = 0 
-    end
-    
-    def show(req)
-      TYPES.map {|type,range,price| if req.value?(type) then calc(price); 
-        filter(req.delete_if {|key| key == :period}.merge(year:range)) end }
-        .compact.flatten.sort_by {|mov| rand * mov.rate.to_f}.first
+      @person_acct = 0
+      @mov_filter = {}
+      @blocks = {}
     end
     
     def self.cash_sum
@@ -42,6 +39,33 @@ module Movies
     
     def how_much?(mov)
       "Movie \"#{mov}\" costs: #{TYPES.select {|type,range| filter(title: /#{mov}/,year:range).any?}.map(&:last).join.to_i}"
+    end
+    
+    def define_filter(filter)
+      if block_given?
+        @mov_filter[filter] = all.map { |movie| if yield(movie) then movie.title end }.compact
+      end
+    end
+    
+    #store block in hash
+    def define_filter(fltr_name,&block)
+     @blocks[fltr_name] = block
+    end
+    
+    def show(req=nil)
+      if req!=nil
+        if @blocks.keys.include?(req.keys.first)
+          all.map {|movie|  movie.title if @blocks[req.keys.first].call(movie)}.compact
+        else
+          TYPES.map { |type,range,price| if req.value?(type) then calc(price); 
+          filter(req.delete_if { |key| key == :period}.merge(year:range)) end }
+          .compact.flatten.sort_by { |mov| rand * mov.rate.to_f }.first.inspect
+        end  
+      elsif req==nil && block_given?
+        all.map { |movie| if yield(movie) then movie.title end }.compact    
+      else
+        "Filter not determined"
+      end    
     end
     
   end
