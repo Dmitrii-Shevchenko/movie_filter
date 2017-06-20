@@ -68,7 +68,8 @@ begin
   puts "-----------------------------------------"
   puts net.show(period: :ancient)
   puts "-----------------------------------------"
-  puts net.show
+  net.define_filter(:newqq) { |movie,year| movie.year == year}
+  puts net.show(newqq: 2013)
 rescue Exception => err
   puts "Caught exception: #{err.message}"
   puts err.backtrace.inspect

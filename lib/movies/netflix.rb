@@ -55,7 +55,7 @@ module Movies
     def show(req=nil)
       if req!=nil
         if @blocks.keys.include?(req.keys.first)
-          all.map {|movie|  movie.title if @blocks[req.keys.first].call(movie)}.compact
+          all.map { |movie|  movie.title if @blocks[req.keys.first].call(movie, req.values.first) }.compact
         else
           TYPES.map { |type,range,price| if req.value?(type) then calc(price); 
           filter(req.delete_if { |key| key == :period}.merge(year:range)) end }
@@ -66,7 +66,6 @@ module Movies
       else
         "Filter not determined"
       end    
-    end
-    
+    end    
   end
 end
