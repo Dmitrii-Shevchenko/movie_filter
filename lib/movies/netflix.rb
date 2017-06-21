@@ -62,7 +62,7 @@ module Movies
     
     #show    
     def show(req=nil)
-      if req!=nil
+      if req
         @blocks.keys.include?(req.keys.first) ? block_filter(req) : simple_filter(req)
       else
         all.map { |movie| if yield(movie) then movie.title end }.compact    
