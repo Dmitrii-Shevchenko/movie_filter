@@ -48,16 +48,24 @@ begin
   puts tht2.cash
   
   puts "-----------------------------------------"
+  
   puts "FILTER: define_filter(:new_sci_fi) { |movie| movie.year > 2014 }"
   net.define_filter(:new_sci_fi) { |movie| movie.year > 2014 }
   puts net.show(new_sci_fi: true)
   
   puts "-----------------------------------------"
-  puts "FILTER: define_filter(:newq) { |movie| movie.year < 1950}"
-  net.define_filter(:newq) { |movie| movie.year < 1950}
-  puts net.show(newq: true)
+  
+  net.define_filter(:new1) { |movie,year| movie.year == year}
+  puts net.show(new1: 2013)
   
   puts "-----------------------------------------"
+  
+  puts "FILTER: define_filter(:newq) { |movie| movie.year < 1950}"
+  net.define_filter(:new2) { |movie| movie.year < 1950}
+  puts net.show(new2: true)
+  
+  puts "-----------------------------------------"
+  
   puts "FILTER: certain"
   puts net.show { 
     |movie| !movie.title.include?('Terminator') && 
@@ -68,8 +76,14 @@ begin
   puts "-----------------------------------------"
   puts net.show(period: :ancient)
   puts "-----------------------------------------"
-  net.define_filter(:newqq) { |movie,year| movie.year == year}
-  puts net.show(newqq: 2013)
+  
+  puts "FILTER: person"
+  net.define_filter(:new_sci) { |movie, year| movie.year == year }
+  net.define_filter(:newest_sci_f, from: :new_sci, arg: 2001)  #######
+  puts net.show(newest_sci_f: true)
+  
+  puts "-----------------------------------------"
+
 rescue Exception => err
   puts "Caught exception: #{err.message}"
   puts err.backtrace.inspect
