@@ -71,6 +71,21 @@ describe Netflix do
       end
     end
   end
+  
+  describe '#define_filter' do
+    let(:some_filter) { some_filter = netflix.define_filter(:new_filter) { 
+        |movie, year| movie.year == year }
+    }
+
+    it 'should create a new filter(Proc)' do
+      expect(some_filter).to be_a(Proc)
+    end
+    
+    it 'should create a new filter from another' do
+      expect(netflix.define_filter(:new_filter, from: :new_filter, arg: 2001)).to be_a(Proc)
+    end
+  end 
+  
    
   describe '#pay' do 
     it 'changes account' do 
