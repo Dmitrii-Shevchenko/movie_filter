@@ -74,16 +74,16 @@ begin
   }
   
   puts "-----------------------------------------"
-  puts net.show(period: :ancient)
+  puts net.show(period: :ancient).inspect
   puts "-----------------------------------------"
   
   puts "FILTER: person"
   net.define_filter(:new_sci) { |movie, year| movie.year == year }
-  net.define_filter(:newest_sci_f, from: :new_sci, arg: 2001)  #######
+  net.define_filter(:newest_sci_f, from: :new_sci, arg: 2001)
   puts net.show(newest_sci_f: true)
   
   puts "-----------------------------------------"
-
+  puts net.show(new2: true)
 rescue Exception => err
   puts "Caught exception: #{err.message}"
   puts err.backtrace.inspect

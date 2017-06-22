@@ -72,7 +72,7 @@ module Movies
     private def simple_filter(req)
       TYPES.map { |type,range,price| if req.value?(type) then calc(price); 
       filter(req.delete_if { |key| key == :period}.merge(year:range)) end }
-      .compact.flatten.sort_by { |mov| rand * mov.rate.to_f }.first.inspect
+      .compact.flatten.sort_by { |mov| rand * mov.rate.to_f }.first
     end
     
     private def block_filter(req)

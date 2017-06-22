@@ -29,13 +29,49 @@ describe Netflix do
         describe 2000..2017 do
           it { is_expected.to include(netflix.show(period: :new).year) }
         end                 
-      end
+      end 
     end
-
+    
     context 'when not enough money' do
      it 'should raise error' do 
         expect {netflix.show(period: :new, genre: 'Comedy')}.to raise_error('havnt money for showing movie')
       end  
+    end
+    
+    context 'when use saved filter' do
+      before do
+        netflix.define_filter(:new2) { |movie| movie.year < 1950}
+      end
+      it 'should return movie' do 
+        expect(netflix.show(new2: true)).not_to be_nil
+      end
+    end  
+    
+    context 'when use not existed filter' do
+      before do
+        netflix.define_filter(:new2) { |movie| movie.year < 1950}
+      end
+      it 'should return movie' do 
+        expect(netflix.show(not_existed_filter: true)).to be_nil
+      end
+    end  
+    
+    context 'when use person filter' do
+      before do
+        netflix.define_filter(:new_sci) { |movie, year| movie.year == year }
+        netflix.define_filter(:newest_sci_fi, from: :new_sci, arg: 2001)
+      end
+      it 'should return movie' do 
+        expect(netflix.show(newest_sci_fi: true)).not_to be_nil
+      end
+    end  
+    
+    context 'when use certain filter' do
+      it 'should return certain filter' do
+        expect(netflix.show { |movie| !movie.title.include?('Terminator') && 
+                              movie.genre.include?('Action') && 
+                              movie.year > 2008 }).not_to be_nil
+      end
     end
   end
    
