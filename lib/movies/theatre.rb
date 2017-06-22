@@ -30,7 +30,7 @@ module Movies
       raise 'have not this movie or incorrect time'
     end
 
-    def when?(mov) # mnogo function v odnom metode i ubrat probeli vkonce strok
+    def when?(mov)
       if @day_time.values.inject(all) { |sum, filter| sum - filter }
       .include?(filter(title: /#{mov}/).first)
         raise 'have not time for this movie'

@@ -62,11 +62,22 @@ module Movies
     end
     
     def simple_filter(req)
-      TYPES.map { |type,range,price| if req.value?(type) then calc(price); 
-      filter(req.delete_if { |key| key == :period}.merge(year:range)) end }
-      .compact.flatten.sort_by { |mov| rand * mov.rate.to_f }.first
+      TYPES.map { |type,range,price|
+      #если в массиве есть такой тип фильма то вычитаем его стоимость из суммы
+        if req.value?(type)
+          calc(price)
+          #удаляем часть 'period:ancient' из запроса, для того что бы осталась
+          #вся последовательность:
+          #(genre: 'Comedy', producer: 'Spilberg',.....)
+          #потому что 'period:ancient' не обработается методом 'filter()'
+          filter(req.delete_if { |key| key == :period}.merge(year:range)) 
+        end 
+      #compact.flatten - избалвяемся из подмассивов, чтобы он был одномерный
+      #сортируем его по рейтингу и возвращаем рандомный первый фильм
+      }.compact.flatten.sort_by { |mov| rand * mov.rate.to_f }.first
     end
     
+    #if filter have block, calculate it
     def block_filter(req)
       all.select { |movie| @custom_filters[req.keys.first].call(movie, req.values.first) }.compact
     end

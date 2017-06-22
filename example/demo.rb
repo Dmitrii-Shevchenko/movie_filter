@@ -84,6 +84,9 @@ begin
   
   puts "-----------------------------------------"
   puts net.show(new2: true).inspect
+    puts "-----------------------------------------"
+    puts net.show(genre: 'Comedy', period: :ancient).inspect 
+    puts net.show(period: :ancient).inspect
 rescue Exception => err
   puts "Caught exception: #{err.message}"
   puts err.backtrace.inspect
