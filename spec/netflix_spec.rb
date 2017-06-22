@@ -48,9 +48,6 @@ describe Netflix do
     end  
     
     context 'when use not existed filter' do
-      before do
-        netflix.define_filter(:new2) { |movie| movie.year < 1950}
-      end
       it 'should return movie' do 
         expect(netflix.show(not_existed_filter: true)).to be_nil
       end
