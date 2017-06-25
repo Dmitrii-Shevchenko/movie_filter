@@ -5,17 +5,19 @@ module Movies
   class Theatre < MovieCollection
     include Cashbox
     attr_accessor :cash_sum
-    DAY_TIME = [
-      Time.parse('06:00')...Time.parse('12:00'),
-      Time.parse('12:00')...Time.parse('18:00'),
-      Time.parse('18:00')...Time.parse('24:00')
-    ].freeze
+    
+    COST_TIME = {
+      3 => Time.parse('06:00')...Time.parse('12:00'),
+      5 =>Time.parse('12:00')...Time.parse('18:00'),
+      10 => Time.parse('18:00')...Time.parse('24:00')
+    }.freeze
+    
     def initialize(file_name)
       super(file_name)
       @day_time = {
-        DAY_TIME[0] => filter(year: 1900..1945),
-        DAY_TIME[1] => filter(genre: 'Comedy') | filter(genre: 'Action'),
-        DAY_TIME[2] => filter(genre: 'Horror') | filter(genre: 'Drama')
+        COST_TIME[3] => filter(year: 1900..1945),
+        COST_TIME[5] => filter(genre: 'Comedy') | filter(genre: 'Action'),
+        COST_TIME[10] => filter(genre: 'Horror') | filter(genre: 'Drama')
       }
       @cash_sum = []
     end
@@ -25,44 +27,37 @@ module Movies
       .values.flatten)
     end
 
-    private def check(mov_list)
-      !mov_list.empty? && (return mov_list)
-      raise 'have not this movie or incorrect time'
-    end
-
     def when?(mov)
       if @day_time.values.inject(all) { |sum, filter| sum - filter }
-      .include?(filter(title: /#{mov}/).first)
+        .include?(filter(title: /#{mov}/).first)
         raise 'have not time for this movie'
       else
-      check(@day_time.select { |time, movs| !(movs & filter(title: /#{mov}/)).empty? }
+      check(@day_time.select { |time, movs| 
+        !(movs & filter(title: /#{mov}/)).empty? }
         .keys.map { |time| time_output(time) })
       end
     end
-
-    def buy_ticket(time = time_now)
-      case Time.parse(time)
-      when (DAY_TIME[0])
-          pay(3)
-          "(#{time}) вы купили билет на #{self.show(time).sample.title}"
-      when (DAY_TIME[1])
-          pay(5)
-          "(#{time}) вы купили билет на #{self.show(time).sample.title}"
-      when (DAY_TIME[2])
-          pay(10)
-          "(#{time}) вы купили билет на #{self.show(time).sample.title}"
-      else
-          '(#{Time.parse(time)}) Кинотеатр не работает'
-      end
+    
+    def buy_ticket(time = time_now)     
+      COST_TIME.select {|cost, range_time| range_time===Time.parse(time)
+        pay(cost)
+        return "(#{time}) вы купили билет на #{self.show(time).sample.title}"  
+      }
     end
 
     private
     def time_output(time_range)
-      "since #{time_range.first.strftime('%H:%M')} before #{time_range.end.strftime('%H:%M')}"
+      "since #{time_range.first.strftime('%H:%M')} "+
+      "before #{time_range.end.strftime('%H:%M')}"
     end
 
     def time_now
-    DateTime.now.strftime('%H:%M')  
+      DateTime.now.strftime('%H:%M')  
+    end
+    
+    def check(mov_list)
+      !mov_list.empty? && (return mov_list)
+      raise 'have not this movie or incorrect time'
     end
   end
 end
