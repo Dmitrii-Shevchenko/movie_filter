@@ -93,7 +93,7 @@ describe Netflix do
     end
 
     it 'fails when negative amount' do
-      expect {netflix.pay(-30)}.not_to change(netflix, :person_acct)
+      expect {netflix.pay(-30)}.to raise_error("uncorrect sum")
     end
   end
 

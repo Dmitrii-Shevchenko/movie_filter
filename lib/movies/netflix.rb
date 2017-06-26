@@ -21,11 +21,9 @@ module Movies
     def self.cash_sum
       @@cash_sum
     end
-
-    def pay(mny)
-      if mny>0
-        @person_acct = mny + @person_acct
-      end
+  
+    def pay(mny)    
+      (mny>0) ? (@person_acct += mny) : (raise "uncorrect sum")
     end
     
     def how_much?(mov)
@@ -47,7 +45,7 @@ module Movies
     private 
     def calc(price)
       if price <= @person_acct
-        @person_acct = @person_acct-price
+        @person_acct -=price
       else
         raise 'havnt money for showing movie'
       end
