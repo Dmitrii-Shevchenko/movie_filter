@@ -1,6 +1,7 @@
 module Movies
   class Movie   
-  attr_reader :link, :title, :year, :country, :release, :genre, :time, :rate, :producer, :actors
+  attr_reader :link, :title, :year, :country, :release, 
+  :genre, :time, :rate, :producer, :actors, :period
     def initialize(movie,col)
       @link = movie[0]
       @title = movie[1]
@@ -14,9 +15,16 @@ module Movies
       @actors = movie[9].split(",")
       @mov_col = col
     end
-
+    
+    def period
+     self.class.name.downcase[8..-1].to_sym
+    end
+    
     def matches?(key, value)
+      #получаем все жанры которые есть в данном фильме (комедия,семейный,драма)
       self_key = self.send(key)
+      #если фильм имеет один жанр (комедия), то сравниваем его со значением в запросе
+      #а если это массив жанров(комедия,драма), то проверяем есть ли в нем этот жанр
       unless self_key.is_a?(Array)
         value===self_key
       else

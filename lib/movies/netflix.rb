@@ -59,19 +59,25 @@ module Movies
       @custom_filters[fltr_name] = Proc.new{ |movie| @custom_filters[from].call(movie,arg) }
     end
     
+#    def simple_filter(req)
+#      TYPES.map { |type,range,price|
+#      #если в массиве есть такой тип фильма то вычитаем его стоимость из суммы
+#        if req.value?(type)
+#          #filter(req) ? calc(price) : "error"
+#         # filter(req)
+#       # end 
+#      #compact.flatten - избалвяемся из подмассивов, чтобы он был одномерный
+#      #сортируем его по рейтингу и возвращаем рандомный первый фильм
+#      }.compact.flatten.sort_by { |mov| rand * mov.rate.to_f }.first
+#      filter(req)
+#    end
+    
     def simple_filter(req)
       TYPES.map { |type,range,price|
-      #если в массиве есть такой тип фильма то вычитаем его стоимость из суммы
-        if req.value?(type)
+        if req.value?(type) && filter(req)
           calc(price)
-          #удаляем часть 'period:ancient' из запроса, для того что бы осталась
-          #вся последовательность:
-          #(genre: 'Comedy', producer: 'Spilberg',.....)
-          #потому что 'period:ancient' не обработается методом 'filter()'
-          filter(req.delete_if { |key| key == :period}.merge(year:range)) 
+          filter(req)
         end 
-      #compact.flatten - избалвяемся из подмассивов, чтобы он был одномерный
-      #сортируем его по рейтингу и возвращаем рандомный первый фильм
       }.compact.flatten.sort_by { |mov| rand * mov.rate.to_f }.first
     end
     
