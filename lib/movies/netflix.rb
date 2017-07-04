@@ -31,49 +31,25 @@ module Movies
         
     def define_filter(name, from: nil, arg: nil, &block)
       from.nil? ? filter_with_block(name, &block) : person_filter(name,from,arg)
-    end
-   
+    end 
     
     def show(req=nil, &block)  
-      if req 
-        if req.keys.count == 1 && req.keys.first == :period
-          return singular_period_filter(req)
-        end
-        #    
-        local_movie_list = req.reduce(all) {|movs, (fltr_k, fltr_v)| movs.select {|mov| mov_exist?(mov, fltr_k, fltr_v)}}
-        #
-        if block_given?
-          return local_movie_list.select { |movie| yield(movie)}.compact
-        end
-        #
-        return local_movie_list
-      else
-        all.select { |movie| yield(movie)}.compact 
+      unless req then return all.select { |movie| yield(movie)}.compact end          
+      if block_given?
+        return req.reduce(all) {|movs, (fltr_k, fltr_v)| movs.select {|mov| mov_exist?(mov, fltr_k, fltr_v)}}.select { |movie| yield(movie)}.compact
       end
+        req.reduce(all) {|movs, (fltr_k, fltr_v)| movs.select {|mov| mov_exist?(mov, fltr_k, fltr_v)}}
     end
     
     private    
-    def mov_exist?(mov, fltr_k, fltr_v)
-      if fltr_k == :period
-        plural_period_filter(fltr_k => fltr_v).include?(mov)
         
-      elsif @custom_filters.keys.include?(fltr_k)
-        block_filter(fltr_k => fltr_v).include?(mov)
-        
-      elsif [:link, :title, :year, :country, :release,
-             :genre, :time, :rate, :producer, :actors].include?(fltr_k)
-        filter(fltr_k => fltr_v).include?(mov)
-      end     
+    def mov_exist?(mov, fltr_k, fltr_v)        
+      if @custom_filters.keys.include?(fltr_k)
+       return block_filter(fltr_k => fltr_v).include?(mov)       
+      end
+        filter(fltr_k => fltr_v).include?(mov)     
     end
-     
-    def plural_period_filter(req)
-      TYPES.map { |type,range,price|
-        if req.value?(type) && filter(req)
-          filter(req)
-        end 
-      }.compact.flatten
-    end   
-      
+  
     def calc(price)
       if price <= @person_acct
         @person_acct -= price
@@ -89,15 +65,6 @@ module Movies
     def person_filter(fltr_name, from, arg)
       @custom_filters[fltr_name] = Proc.new{ |movie| @custom_filters[from].call(movie,arg) }
     end
-    
-    def singular_period_filter(req)
-      TYPES.map { |type,range,price|
-        if req.value?(type) && filter(req)
-          calc(price)
-          filter(req)
-        end 
-      }.compact.flatten.sort_by { |mov| rand * mov.rate.to_f }.first
-    end   
 
     def block_filter(req)
       all.select { |movie| @custom_filters[req.keys.first].call(movie, req.values.first) }.compact
