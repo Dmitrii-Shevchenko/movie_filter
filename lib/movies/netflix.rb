@@ -40,11 +40,19 @@ module Movies
     
     private    
         
+#    def mov_exist?(mov, fltr_k, fltr_v)        
+#      if @custom_filters.keys.include?(fltr_k)
+#        block_filter({fltr_k => fltr_v}, mov)
+#      else
+#        filter(fltr_k => fltr_v).include?(mov)  
+#      end   
+#    end
+    
     def mov_exist?(mov, fltr_k, fltr_v)        
       if @custom_filters.keys.include?(fltr_k)
         block_filter({fltr_k => fltr_v}, mov)
       else
-        filter(fltr_k => fltr_v).include?(mov)  
+        filter({fltr_k => fltr_v},mov)  
       end   
     end
   

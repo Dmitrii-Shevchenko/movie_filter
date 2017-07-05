@@ -19,9 +19,13 @@ module Movies
     def sort_by(param)
       @arr_movs.sort_by {|mov| mov.send(param)}
     end
-
-    def filter(requests)
-      requests.reduce(@arr_movs) {|movs,(filter, value)| movs.select{|mov| mov.matches?(filter, value)}}
+    
+    def filter(requests,mov)
+      if mov
+        mov.matches?(requests.keys.first, requests.values.first)
+      else
+        requests.reduce(@arr_movs) {|movs,(filter, value)| movs.select{|mov| mov.matches?(filter, value)}}
+      end
     end
 
     def stats(hsh)
