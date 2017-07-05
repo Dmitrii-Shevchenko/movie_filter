@@ -33,14 +33,6 @@ module Movies
       from.nil? ? filter_with_block(name, &block) : person_filter(name,from,arg)
     end 
     
-#    def show(req=nil, &block)  
-#      unless req then return all.select { |movie| yield(movie)} end          
-#      if block_given?
-#        return req.reduce(all) {|movs, (fltr_k, fltr_v)| movs.select {|mov| mov_exist?(mov, fltr_k, fltr_v)}}.select { |movie| yield(movie)}.compact
-#      end
-#        req.reduce(all) {|movs, (fltr_k, fltr_v)| movs.select {|mov| mov_exist?(mov, fltr_k, fltr_v)}}
-#    end
-    
     def show(**filters, &block)  
       res = filters.reduce(all) {|movs, (fltr_k, fltr_v)| movs.select {|mov| mov_exist?(mov, fltr_k, fltr_v)}}
       block ? res.select(&block) : res
