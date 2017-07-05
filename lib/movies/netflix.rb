@@ -33,21 +33,27 @@ module Movies
       from.nil? ? filter_with_block(name, &block) : person_filter(name,from,arg)
     end 
     
-    def show(req=nil, &block)  
-      unless req then return all.select { |movie| yield(movie)}.compact end          
-      if block_given?
-        return req.reduce(all) {|movs, (fltr_k, fltr_v)| movs.select {|mov| mov_exist?(mov, fltr_k, fltr_v)}}.select { |movie| yield(movie)}.compact
-      end
-        req.reduce(all) {|movs, (fltr_k, fltr_v)| movs.select {|mov| mov_exist?(mov, fltr_k, fltr_v)}}
+#    def show(req=nil, &block)  
+#      unless req then return all.select { |movie| yield(movie)} end          
+#      if block_given?
+#        return req.reduce(all) {|movs, (fltr_k, fltr_v)| movs.select {|mov| mov_exist?(mov, fltr_k, fltr_v)}}.select { |movie| yield(movie)}.compact
+#      end
+#        req.reduce(all) {|movs, (fltr_k, fltr_v)| movs.select {|mov| mov_exist?(mov, fltr_k, fltr_v)}}
+#    end
+    
+    def show(**filters, &block)  
+      res = filters.reduce(all) {|movs, (fltr_k, fltr_v)| movs.select {|mov| mov_exist?(mov, fltr_k, fltr_v)}}
+      block ? res.select(&block) : res
     end
     
     private    
         
     def mov_exist?(mov, fltr_k, fltr_v)        
       if @custom_filters.keys.include?(fltr_k)
-       return block_filter(fltr_k => fltr_v).include?(mov)       
-      end
-        filter(fltr_k => fltr_v).include?(mov)     
+        block_filter({fltr_k => fltr_v}, mov)
+      else
+        filter(fltr_k => fltr_v).include?(mov)  
+      end   
     end
   
     def calc(price)
@@ -66,8 +72,8 @@ module Movies
       @custom_filters[fltr_name] = Proc.new{ |movie| @custom_filters[from].call(movie,arg) }
     end
 
-    def block_filter(req)
-      all.select { |movie| @custom_filters[req.keys.first].call(movie, req.values.first) }.compact
+    def block_filter(req,mov)
+      @custom_filters[req.keys.first].call(mov, req.values.first)
     end
   end
 end
