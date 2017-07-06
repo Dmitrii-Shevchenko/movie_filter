@@ -34,25 +34,17 @@ module Movies
     end 
     
     def show(**filters, &block)  
-      res = filters.reduce(all) {|movs, (fltr_k, fltr_v)| movs.select {|mov| mov_exist?(mov, fltr_k, fltr_v)}}
+      res = filters.reduce(all) {|movs, filter| movs.select {|mov| mov_exist?(mov, Hash[*filter])}}
       block ? res.select(&block) : res
     end
     
     private    
-        
-#    def mov_exist?(mov, fltr_k, fltr_v)        
-#      if @custom_filters.keys.include?(fltr_k)
-#        block_filter({fltr_k => fltr_v}, mov)
-#      else
-#        filter(fltr_k => fltr_v).include?(mov)  
-#      end   
-#    end
-    
-    def mov_exist?(mov, fltr_k, fltr_v)        
-      if @custom_filters.keys.include?(fltr_k)
-        block_filter({fltr_k => fltr_v}, mov)
+ 
+    def mov_exist?(mov, filter)     
+      if @custom_filters.keys.include?(filter.keys.first)
+        block_filter(filter, mov)
       else
-        filter({fltr_k => fltr_v},mov)  
+        filter(filter,mov)  
       end   
     end
   
@@ -72,8 +64,8 @@ module Movies
       @custom_filters[fltr_name] = Proc.new{ |movie| @custom_filters[from].call(movie,arg) }
     end
 
-    def block_filter(req,mov)
-      @custom_filters[req.keys.first].call(mov, req.values.first)
+    def block_filter(filter, mov)
+      @custom_filters[filter.keys.first].call(mov, filter.values.first)
     end
   end
 end
