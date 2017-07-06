@@ -34,19 +34,19 @@ module Movies
     end 
     
     def show(**filters, &block)  
-      res = filters.reduce(all) {|movs, filter| movs.select {|mov| mov_exist?(mov, Hash[*filter])}}
+      res = filters.reduce(all) {|movs, (fltr_k, fltr_v)| movs.select {|mov| mov_exist?(mov, fltr_k, fltr_v)}}
       block ? res.select(&block) : res
     end
     
     private    
  
-    def mov_exist?(mov, filter)     
-      if @custom_filters.keys.include?(filter.keys.first)
-        block_filter(filter, mov)
+    def mov_exist?(mov, fltr_k, fltr_v)        
+      if @custom_filters.keys.include?(fltr_k)
+        block_filter(mov, fltr_k, fltr_v)
       else
-        filter(filter,mov)  
+        filter(mov, fltr_k, fltr_v)   
       end   
-    end
+     end
   
     def calc(price)
       if price <= @person_acct
@@ -64,8 +64,8 @@ module Movies
       @custom_filters[fltr_name] = Proc.new{ |movie| @custom_filters[from].call(movie,arg) }
     end
 
-    def block_filter(filter, mov)
-      @custom_filters[filter.keys.first].call(mov, filter.values.first)
+    def block_filter(mov, fltr_k, fltr_v)
+      @custom_filters[fltr_k].call(mov, fltr_v)
     end
   end
 end

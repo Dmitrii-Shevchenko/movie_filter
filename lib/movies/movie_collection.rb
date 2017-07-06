@@ -20,9 +20,9 @@ module Movies
       @arr_movs.sort_by {|mov| mov.send(param)}
     end
     
-    def filter(requests,mov)
+    def filter(mov, fltr_k, fltr_v)
       if mov
-        mov.matches?(requests.keys.first, requests.values.first)
+        mov.matches?(fltr_k, fltr_v)
       else
         requests.reduce(@arr_movs) {|movs,(filter, value)| movs.select{|mov| mov.matches?(filter, value)}}
       end
