@@ -1,5 +1,7 @@
+#
 module Movies
-  class Modern < Movie  
+  #
+  class Modern < Movie
     def inspect
       "#{@title} - cовременное кино: играют #{@actors.join(',')}"
     end
