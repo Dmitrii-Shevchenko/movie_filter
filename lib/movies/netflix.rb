@@ -44,13 +44,19 @@ module Movies
     def show(**filters, &block)
       res = filters.reduce(all) do |movs, (fltr_k, fltr_v)|
         movs.select do |mov|
-          mov_exist?(mov, fltr_k, fltr_v) && calc(define_price(mov))
+          mov_exist?(mov, fltr_k, fltr_v)
         end
       end
-      block ? res.select(&block) : res
+      (block ? take_money(res.select(&block)) : take_money(res))
     end
 
     private
+
+    def take_money(movs)
+      res = movs.sort_by {|mov| rand * mov.rate.to_f}.first
+      calc(define_price(res))
+      res
+    end
 
     def mov_exist?(mov, fltr_k, fltr_v)
       if @custom_filters.keys.include?(fltr_k)
