@@ -3,79 +3,7 @@ include  Movies
 begin
   #test netflix
   net = Netflix.new('./example/movies.txt' || ARGV[0])
-  net.pay(300)
-  puts net.person_acct    
-  puts net.show(genre: 'Comedy', period: :ancient).inspect 
-  
-  puts net.show(period: :ancient).inspect  
-    puts net.show(period: :classic).inspect 
-      puts net.show(period: :modern).inspect 
-        puts net.show(period: :new).inspect 
-        
-  puts net.person_acct 
-  puts net.how_much?('Elite Squad')
-  
-  #test theatre
-  tht = Theatre.new('./example/movies.txt' || ARGV[0])
-  puts tht.show("10:20").inspect
-  puts tht.when?('Terminator')
-  tht2 = Theatre.new('./example/movies.txt' || ARGV[0])
-  
-  puts Netflix.cash
-  puts tht.cash
-  
-  Netflix.pay(500,'JPY')
-  Netflix.pay(1000,'USD')
-  Netflix.pay(1000,'USD')
-  Netflix.pay(12314,'EUR')
-  Netflix.pay(500,'JPY')
-  Netflix.pay(11111)
-  
-  
-  puts Netflix.cash
-  puts "-----------------------------------"
-  tht.pay(1000,'USD')
-
-  tht2.pay(25)
-
-  tht.pay(30,"EUR")
-  puts tht.cash
-  puts tht.take('bank')
-  puts tht.cash
-
-  puts tht2.buy_ticket('11:30')
-  puts tht2.buy_ticket("10:20")  
-  puts tht2.cash
-  
-  puts "-----------------------------------------"
-  
-  puts "FILTER: define_filter(:new_sci_fi) { |movie| movie.year > 2014 }"
-  net.define_filter(:new_sci_fi) { |movie| movie.year > 2014 }
-  puts net.show(new_sci_fi: true).inspect
-  
-  puts "-----------------------------------------"
-  
-  net.define_filter(:new1) { |movie,year| movie.year == year}
-  puts net.show(new1: 2013).inspect
-  
-  puts "-----------------------------------------"
-  
-  puts "FILTER: define_filter(:newq) { |movie| movie.year < 1950}"
-  net.define_filter(:new2) { |movie| movie.year < 1950}
-  puts net.show(new2: true).inspect
-  
-  puts "-----------------------------------------"
-  
-  puts "FILTER: certain"
-  puts net.show { 
-    |movie| !movie.title.include?('Terminator') && 
-    movie.genre.include?('Action') && 
-    movie.year > 2008 
-  }.inspect
-  
-  puts "-----------------------------------------"
-  puts net.show(period: :ancient).inspect
-  puts "-----------------------------------------"
+  net.pay(100500)
   
   puts "FILTER: person"
   net.define_filter(:new_sci) { |movie, year| movie.year == year }
@@ -83,12 +11,29 @@ begin
   puts net.show(newest_sci_f: true).inspect
   
   puts "-----------------------------------------"
-  puts net.show(new2: true).inspect
-  puts "-----------------------------------------"
+  
   puts net.show(genre: 'Comedy', period: :ancient).inspect 
   puts net.show(period: :ancient).inspect
+  
   puts "-----------------------------------------"
-  puts tht.buy_ticket("10:20")
+  
+  net.define_filter(:a) { |movie| movie.genre.include?('Horror') }
+  net.define_filter(:b) { |movie| movie.year > 1970 }
+  net.define_filter(:c) { |movie| movie.rate.to_d > 8.4}
+  puts net.show(a: true, b: true, c: true).inspect
+  #puts net.show(b: true) #, b: true, c: true)
+ # puts net.show(a: true, period: :new).inspect
+  puts "-----------------------------------------"
+  puts net.show(b: true, genre: 'Comedy').inspect
+  puts net.show(){ |movie| movie.year < 1930 }.inspect
+  mov = net.show(){ |movie| movie.year < 1930 }.last
+  tht = Theatre.new('./example/movies.txt' || ARGV[0])
+  puts tht.show("10:20").inspect
+  puts tht.when?('Terminator')
+  puts net.person_acct
+  puts net.how_much?('Terminator')
+  puts net.how_much?(mov)
+  #puts net.show(aasd: true).inspect
 rescue Exception => err
   puts "Caught exception: #{err.message}"
   puts err.backtrace.inspect

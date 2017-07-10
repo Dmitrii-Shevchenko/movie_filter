@@ -79,10 +79,10 @@ describe Cashbox do
 #-------------------------------------------------
   describe '#buy_ticket' do
     describe 'for theatre' do
-#      context 'by default' do
-#        subject{first_tht.buy_ticket}
-#        it{is_expected.to include('вы купили билет на')} #ili oshibka (noch)
-#      end
+      context 'by default' do
+        subject{first_tht.buy_ticket}
+        it{is_expected.to include('вы купили билет на')}
+      end
       context 'on particular time' do
         subject{first_tht.buy_ticket('10:20')}
         it{is_expected.to include('(10:20) вы купили билет на')}

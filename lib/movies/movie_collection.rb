@@ -24,14 +24,10 @@ module Movies
       @arr_movs.sort_by { |mov| mov.send(param) }
     end
 
-    def filter(requests, mov = nil, fltr_k = nil, fltr_v = nil)
-      if mov
-        mov.matches?(fltr_k, fltr_v)
-      else
+    def filter(requests)
         requests.reduce(@arr_movs) do |all_movs, (filter, value)|
           all_movs.select { |some_mov| some_mov.matches?(filter, value) }
         end
-      end
     end
 
     def stats(hsh)

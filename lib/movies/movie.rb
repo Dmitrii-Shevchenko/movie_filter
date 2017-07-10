@@ -19,21 +19,21 @@ module Movies
       @mov_col = col
     end
 
-    @@mov_items = %i[
+    MOV_ITEMS = %i[
       link title year country release genre time rate producer actors period
-    ]
+    ].freeze
 
     def period
       self.class.name.downcase[8..-1].to_sym
     end
 
     def matches?(key, value)
-      raise 'non-existent filter' unless @@mov_items.include?(key)
+      raise 'non-existent filter' unless MOV_ITEMS.include?(key)
       self_key = self.send(key)
-      if !self_key.is_a?(Array)
-        value === self_key
-      else
+      if self_key.is_a?(Array)
         self_key.include?(value)
+      else
+        value === self_key
       end
     end
 

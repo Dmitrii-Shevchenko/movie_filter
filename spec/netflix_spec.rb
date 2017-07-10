@@ -7,32 +7,35 @@ describe Netflix do
 
     context 'when enough money' do
       before do
-        netflix.pay(25)
+        netflix.pay(500)
       end
       it 'should show movies' do
-        expect(netflix.show(genre: 'Comedy', period: :new).class).to eq(New)
+        expect(netflix.show(genre: 'Comedy', period: :new).first.class).to eq(New)
       end
 
       context 'test all periods' do        
         describe 1900..1945 do
-          it { is_expected.to include(netflix.show(period: :ancient).year) }
+          it { is_expected.to include(netflix.show(period: :ancient).first.year) }
         end
 
         describe 1945..1968 do
-          it { is_expected.to include(netflix.show(period: :classic).year) }
+          it { is_expected.to include(netflix.show(period: :classic).first.year) }
         end
 
         describe 1968..2000 do
-          it { is_expected.to include(netflix.show(period: :modern).year) }
+          it { is_expected.to include(netflix.show(period: :modern).first.year) }
         end
 
         describe 2000..2017 do
-          it { is_expected.to include(netflix.show(period: :new).year) }
+          it { is_expected.to include(netflix.show(period: :new).first.year) }
         end
       end
     end
 
     context 'when not enough money' do
+     before do
+        netflix.pay(1)
+     end
      it 'should raise error' do
         expect {netflix.show(period: :new, genre: 'Comedy')}.to raise_error('havnt money for showing movie')
       end
@@ -40,6 +43,7 @@ describe Netflix do
 
     context 'when use saved filter' do
       before do
+        netflix.pay(500)
         netflix.define_filter(:new2) { |movie| movie.year < 1950}
       end
       it 'should return movie' do
@@ -49,12 +53,13 @@ describe Netflix do
 
     context 'when use not existed filter' do
       it 'should return movie' do 
-        expect(netflix.show(not_existed_filter: true)).to be_nil
+        expect {netflix.show(not_existed_filter: true)}.to raise_error('non-existent filter')
       end
     end
 
     context 'when use person filter' do
       before do
+        netflix.pay(500)
         netflix.define_filter(:new_sci) { |movie, year| movie.year == year }
         netflix.define_filter(:newest_sci_fi, from: :new_sci, arg: 2001)
       end
