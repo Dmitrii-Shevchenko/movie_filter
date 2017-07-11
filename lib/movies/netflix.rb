@@ -42,20 +42,30 @@ module Movies
     end
 
     def show(**filters, &block)
+      movie = select_movie(filters,&block)
+      take_money(movie)
+      print_showing(movie)
+    end
+    
+    private
+    
+    def select_movie(filters,&block)
       res = filters.reduce(all) do |movs, (fltr_k, fltr_v)|
         movs.select do |mov|
           mov_exist?(mov, fltr_k, fltr_v)
         end
       end
-      (block ? take_money(res.select(&block)) : take_money(res))
+      (block ? res.select(&block) : (res)).sort_by {|mov| rand * mov.rate.to_f}.first
+    end
+    
+    def print_showing(mov)
+      d = DateTime.now
+      "Now showing: #{mov.title} since #{d.strftime('%H:%M')}"\
+      " before #{(d +Rational(mov.time.to_i,1440)).strftime('%H:%M')}"
     end
 
-    private
-
-    def take_money(movs)
-      res = movs.sort_by {|mov| rand * mov.rate.to_f}.first
-      calc(define_price(res))
-      res
+    def take_money(mov)
+      calc(define_price(mov))
     end
 
     def mov_exist?(mov, fltr_k, fltr_v)
