@@ -1,7 +1,9 @@
+#
 module Movies
-  class New < Movie 
+  #
+  class New < Movie
     def inspect
-      "#{@title} - новинка, вышло #{Date.today.year-@year} лет назад!"
+      "#{@title} - новинка, вышло #{Date.today.year - @year} лет назад!"
     end
   end
 end
